@@ -31,3 +31,8 @@
 - turtle_module -> Turtle module implementation
 
 - coinBot -> Program that searches for a possible 'win' by tranding currencies using uphold api
+
+# Haskell
+
+- cesium_bomberman -> AI and String compression projects
+- FunctionalP -> Some Functional Programming exercises in Haskell
