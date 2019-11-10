@@ -1,0 +1,43 @@
+import turtle
+
+size = eval(input("Radioactive Symbol Size: "))
+turtle.setworldcoordinates(-size*1.2,-size*1.2,size*1.2,size*1.2)
+def square(sides,size,rotation):
+    for i in range(sides):
+        turtle.fd(size)
+        turtle.right(rotation)
+def turn():
+    turtle.left(90)
+    turtle.fd(size/1.25)
+    turtle.left(90)
+
+turtle.pu()
+turtle.goto(-size/2,size/2)
+turtle.pd()
+turtle.color("black","yellow")
+turtle.begin_fill()
+square(4,size,90)
+turtle.end_fill()
+turtle.pu()
+turtle.goto(0,-(size/2.5))
+turtle.pd()
+turtle.color("yellow","black")
+turtle.begin_fill()
+turtle.circle((size/2.5),30)
+turn()
+turtle.circle((size/2.5),60)
+turn()
+turtle.circle((size/2.5),60)
+turn()
+turtle.circle((size/2.5),30)
+turtle.end_fill()
+turtle.pu()
+turtle.goto(0,-size/12.5)
+turtle.pd()
+turtle.color("black","black")
+turtle.begin_fill()
+turtle.circle(size/12.5)
+turtle.ht()
+turtle.end_fill()
+
+turtle.exitonclick()

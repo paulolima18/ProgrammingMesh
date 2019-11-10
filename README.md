@@ -24,4 +24,10 @@
 
 - OOP_classes -> Object Oriented Programming Class exercises
 
+# Python
 
+- python_basics -> Basic python functions and syntax
+
+- turtle_module -> Turtle module implementation
+
+- coinBot -> Program that searches for a possible 'win' by tranding currencies using uphold api
