@@ -1,0 +1,25 @@
+.data
+end:  .word 0xffff0010 #Dir
+end1: .word 0xffff0011 #esq
+chr:  .word 0x3f, 0x06, 0x5b, 0x4f,  0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x67, 0x77, 0x7c, 0x39, 0x5e, 0x79, 0x71
+e:	.word 0xFFFF0012 #linhas
+n:	.word  0xFFFF0014 #col
+
+
+.text
+
+main:
+	la $s0,end
+	la $s1,e
+	la $s2,n
+	
+reset:
+	li $t0,0
+loop:
+	beq $t0,4,reset
+	bne $s2,$zero,lol
+	lb $t0,0($s1)
+	j loop
+	
+lol:
+	li $t9,100

@@ -1,0 +1,39 @@
+-Apresentar forma de resolução do problema(Estrutura Geral do Programa)
+{
+	*O programa é construido á volta 3 estruturas que [mnode -> criação de listas com apontador para void(modular)] e [person] e [tasks] que são as estruturas especificas que contêm a real informação da tarefa ou da pessoa.
+
+}
+
+-Esquema com as estruturas usadas
+{
+	*colocar esquema.
+}
+
+-Demonstrar vários pontos requesitados atráves de screenshot e explicação
+{
+	*Explicar todos os 13 pontos brevemente.
+}
+
+-Como são utilizados os ficheiros
+{
+	*Forma de leitura e escrita no ficheiro de pessoas ou de tarefas
+}
+
+-Pequeno manual de como usar o programa
+{
+	*Numa maquina linux deverá ser iniciado o programa da seguinte forma (Ex:"./menu")
+	
+	*De seguida será dada a opção de limitar o numero tarefas por cada utilizador,sendo que esse limite terá de ser superior ao já existente(devido à inicialização por ficheiros texto).ps:existe proteção contra colocação incorreta do utilizador.
+	
+	*O programa irá fazer automaticamente a colocação de alguns elementos no kanban, que serviram como teste.
+
+	*Todas as funcionalidades estão representadas no seguinte print:(colocar print instruções)
+}
+
+
+f(x) = 2x-x ln(x)
+
+derivada = 2 - (derivada de (x) * ln(x) + x * derivada de (ln(x)) )
+
+logo resultado = 2 -( 1*ln(x) + x*(1/x) ))
+1/x é a derivada de ln(x)
