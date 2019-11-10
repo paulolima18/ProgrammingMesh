@@ -1,0 +1,3 @@
+/home/linux/Documents/CPLUS/GC/gameScene/bin/CMakeFiles/rebuild_cache.dir
+/home/linux/Documents/CPLUS/GC/gameScene/bin/CMakeFiles/edit_cache.dir
+/home/linux/Documents/CPLUS/GC/gameScene/bin/CMakeFiles/class5.dir

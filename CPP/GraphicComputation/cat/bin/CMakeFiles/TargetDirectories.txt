@@ -1,0 +1,3 @@
+/home/linux/Documents/CPLUS/GC/cat/bin/CMakeFiles/rebuild_cache.dir
+/home/linux/Documents/CPLUS/GC/cat/bin/CMakeFiles/edit_cache.dir
+/home/linux/Documents/CPLUS/GC/cat/bin/CMakeFiles/class8.dir

@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/linux/Documents/CPLUS/GC/gameScene/main.cpp
+stdio.h
+-
+stdlib.h
+-
+time.h
+-
+GLUT/glut.h
+-
+GL/glut.h
+-
+math.h
+-
+

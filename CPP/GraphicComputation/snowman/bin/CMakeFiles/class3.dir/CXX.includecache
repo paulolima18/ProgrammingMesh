@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/linux/Documents/CPLUS/CG/snowman/main.cpp
+GLUT/glut.h
+-
+GL/glut.h
+-
+math.h
+-
+
