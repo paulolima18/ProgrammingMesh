@@ -31,3 +31,7 @@
 - turtle_module -> Turtle module implementation
 
 - coinBot -> Program that searches for a possible 'win' by tranding currencies using uphold api
+
+- Pong -> Implementation of "Pong", the game, in python3 using pygame
+  * Single-player : "pong.py"
+  * Multiplayer : "pong2p.py"
