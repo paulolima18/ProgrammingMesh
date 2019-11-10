@@ -1,0 +1,36 @@
+
+:: Hotel Premium:
+
+Codigo: 0002
+Nome: ibis2
+Localidade: Braga, Portugal
+Nº Quartos: 15
+Preco/Quarto: 32.25 $
+Taxa aplicavel: 0.8 %
+Preco (Com taxa de luxo): 25.8 $
+
+
+
+:: Hotel Standard:
+
+Codigo: 0003
+Nome: ibis3
+Localidade: Madrid, Espanha
+Nº Quartos: 190
+Preco/Quarto: 131.25 $
+Epoca: true
+Preco nesta epoca: 151.25 $
+
+
+
+:: Hotel Standard:
+
+Codigo: 0001
+Nome: ibis1
+Localidade: Lisboa, Portugal
+Nº Quartos: 74
+Preco/Quarto: 84.35 $
+Epoca: true
+Preco nesta epoca: 104.35 $
+
+
