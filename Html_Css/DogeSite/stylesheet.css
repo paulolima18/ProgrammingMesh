@@ -1,0 +1,50 @@
+.big_blue_center
+{
+  color:rgb(8, 186, 206);
+  font-size: 50px;
+  text-align: center;
+  line-height: 200px;
+}
+.button_orange_center
+{
+  font-size: 60px;
+  text-align: center;
+  line-height: 100px;
+}
+.button_no_way
+{
+  display:block;
+  font-size: 40px;
+  height: 100px;
+  background-color: transparent;
+  color:rgb(255, 186, 206);
+  margin: 0 auto;
+}
+img
+{
+  position: absolute;
+  top: 20%;
+  left: 30%;
+  height: 100px;
+  width: 100px;
+}
+a:link
+{
+  color:rgb(250, 186, 206);
+  text-decoration: none;
+}
+a:visited
+{
+  color:rgb(250, 106, 206);
+  text-decoration: none;
+}
+a:hover
+{
+  color:rgb(150, 186, 206);
+  text-decoration: underline;
+}
+a:active
+{
+  color:rgb(50, 186, 106);
+  text-decoration: underline;
+}
