@@ -7,11 +7,14 @@ typedef struct queue {
 }*PQueue;
 
 void add(PQueue q, int x) {
-    PQueue new;
-    new = malloc(sizeof(struct queue));
+    PQueue new = malloc(sizeof(struct queue)),aux;
     new -> value = x;
-    new -> next = q;
-    q = new;
+    new -> next = NULL;
+    aux=q;
+    while (aux->next!=NULL) {
+        aux=aux->next;
+    }
+    aux->next =new;
 }
 
 int main() {
@@ -19,8 +22,8 @@ int main() {
     a = malloc(sizeof(struct queue));
     a -> value = 1;
     a -> next = NULL;
-    add(a,2);
-    for(aux = a;aux!=NULL;aux=aux->next)
+    add(a, 2);
+    for(aux = a; aux!=NULL; aux=aux->next)
         printf("%d\n", aux->value);
     return 0;
 }

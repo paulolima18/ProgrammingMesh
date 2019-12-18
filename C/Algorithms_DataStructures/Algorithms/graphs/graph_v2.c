@@ -24,6 +24,7 @@ void matGraph(GraphM a, Graph b) {
             }
     }
 }
+
 /* Reverse: reverses the direction of all edges on the graph */
 void reverse(Graph a, Graph b) {
     int i;

@@ -3,6 +3,11 @@
 #include "../help.h"
 
 #define V 7
+#define PATH_GOOD 1
+#define PATH_BAD 0
+#define NOT_VISITED -1
+#define VISITING -2
+
 
 /* Compile with: gcc -o graph graph.c ../help.c */
 
@@ -170,6 +175,74 @@ int pathBF(Graph g, int origin, int visited[], int parents[]) {
     }
     return r;
 }
+/*
+int has_cycle(Graph g) {
+    int state[V], i;
+    for(i=0; i<V; state[i++]=0);
+
+
+    # -----------------
+    # FALTA ENCONTRAR v
+    # -----------------
+
+    return has_cycle_R(g, v, state);
+}
+
+int has_cycle_R(Graph g, int v, int state[]) {
+    List *x;
+    state[v] = 1;
+    x = g[v];
+    int r=0;
+    for(x=g[v];!r && x!=NULL;x=x->next) {
+        if(state[x->dest]==1) r=1;
+
+        else if(state[x->dest]==2)
+                if(has_cycle_R(g, x->dest, state))
+                    r=1;
+    }
+    state[v]=2;
+    return r;
+}
+*/
+
+
+void succN_R(Graph g, int origin, int destination, int N, int visited[]) {
+    struct a * aux;
+    int i;
+    if(visited[origin] == NOT_VISITED) visited[origin] = VISITING;
+
+    if(origin == destination || visited[origin] == PATH_GOOD) {
+        for(i=0; i<V; i++)
+            if(visited[i] == VISITING)
+                visited[i] = PATH_GOOD;
+    }
+    else if(visited[origin] == PATH_BAD || N == 0) {
+        for(i=0; i<V; i++)
+            if(visited[i] == VISITING)
+                visited[i] = PATH_BAD;
+    }
+    else {
+        for(aux = g[origin]; aux!=NULL;aux=aux->next)
+            succN_R(g, aux->dest, destination, N-1, visited);
+    }
+}
+
+/*
+*/
+int succN(Graph g, int v, int N) {
+    int visited[V], i, r=0;
+    for(i = 0; i<V; visited[i++] = NOT_VISITED);
+    visited[v] = PATH_BAD;
+
+    for(i = 0; i<V;i++)
+        if(v != i)
+            succN_R(g, i, v, N, visited);
+
+    for(i=0; i<V; i++)
+        if(visited[i] == PATH_GOOD)
+            r++;
+    return r;
+}
 
 int main() {
     /* Graph Creation */
@@ -200,6 +273,7 @@ int main() {
     /* -------- */
     printf("%d\n",graph_inD(a));
     printf("Is there a path between 0 and 4? %d\n",searchDF(a, 0, 1));
-    printf("Reachable nodes through 0? %d\n",count_graph(a, 0));
+    printf("Reachable nodes through 0? %d\n",count_graph(a, 3));
+    printf("Number of nodes with a path smaller than %d(N) to node %d(x): %d\n", 2, 0, succN(a, 0, 2));
     return 0;
 }
