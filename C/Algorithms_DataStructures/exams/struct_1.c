@@ -1,4 +1,6 @@
-/* gcc -o struct struct_exam.c */
+/*****************************
+ * gcc -o struct struct_exam.c
+ ******************************/
 
 #include <stdio.h>
 #include <stdlib.h>
