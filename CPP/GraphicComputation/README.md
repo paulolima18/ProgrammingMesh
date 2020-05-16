@@ -108,7 +108,7 @@
 	Exercise:
 		Draw a cylinder lit by a directional light
 
-![Example10](class10/example.png)
+![Example9](class9/example.png)
 
 ## Class 10 - Terrain II - Adding light and texture to the terrain
 
