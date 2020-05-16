@@ -18,7 +18,7 @@
 	Exercise:
 		First OpenGL program.
 		
-![Example1](ProgrammingMesh/CPP/GraphicComputation/class1/example.png)
+![Example1](class1/example.png)
 	
 
 ## Class 2 - Basic Interactivity with GLUT Graphical Primitives
@@ -33,7 +33,7 @@
 	Exercise:
 		Create an interactive application with a pyramid.
 		
-![Example2](ProgrammingMesh/CPP/GraphicComputation/class2/example.png)
+![Example2](class2/example.png)
 
 ##Aula 03 - Cilindro e Movimentação de Câmera##
 
