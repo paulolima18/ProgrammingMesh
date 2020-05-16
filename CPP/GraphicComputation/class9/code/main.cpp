@@ -193,9 +193,9 @@ void drawCilinder() {
     float red[] = {0.8,0.2,0.2,1.0};
 
     /*Tipos de materiais*/
-    //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
     glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-    //glMaterialf(GL_FRONT, GL_SHININESS,128);
+    glMaterialf(GL_FRONT, GL_SHININESS,128);
 
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
 	glVertexPointer(3,GL_FLOAT,0,0);

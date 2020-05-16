@@ -1,3 +1,3 @@
-/home/linux/Downloads/escola/CG/2019_2020/aula6/bin/CMakeFiles/rebuild_cache.dir
-/home/linux/Downloads/escola/CG/2019_2020/aula6/bin/CMakeFiles/edit_cache.dir
-/home/linux/Downloads/escola/CG/2019_2020/aula6/bin/CMakeFiles/class6.dir
+/home/meliodas/Documents/ProgrammingMesh/CPP/GraphicComputation/class6/bin/CMakeFiles/rebuild_cache.dir
+/home/meliodas/Documents/ProgrammingMesh/CPP/GraphicComputation/class6/bin/CMakeFiles/class6.dir
+/home/meliodas/Documents/ProgrammingMesh/CPP/GraphicComputation/class6/bin/CMakeFiles/edit_cache.dir

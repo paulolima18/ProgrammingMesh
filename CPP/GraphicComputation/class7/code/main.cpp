@@ -1,6 +1,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include <time.h>
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -19,42 +20,86 @@
 
 using namespace std;
 
-/*-------------------------------------------------------------------------------*/
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-float alfa = 0.0f, beta = 0.5f, radius = 100.0f;
-float camX, camY, camZ;
+float camX = 0.0f, camY = 0.0f, camZ = 0.0f, radius = 100.0f;
+float upX = 0.0f, upY = 1.0f, upZ = 0.0f;
+int startX, startY, tracking = 0;
+int alfa = 0, beta = 45, r = 50;
+float alphaCam = 0.0f;
 
+//----------------------------------------------------------------------------------------------------------------------
+//Camera placement
+
+float eyeHeight = 12.0f;
+
+float centerX = 0.0f, centerY = 0.0f, centerZ = 0.0f;
+
+//Move foward/backwards
+float kFB = 0.0f;
+float kSD = 0.0f;
+
+float Dx = 0.0f, Dy = 0.0f, Dz = 0.0f;
+float Rx = 0.0f, Ry = 0.0f, Rz = 0.0f;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+//Image properties and pixel density array
+unsigned int t, tw, th;
+unsigned char *imageData;
+
+//Grid vertices
+float* gridVertices;
+
+//VBOs
+GLuint buffers[1];
+
+//----------------------------------------------------------------------------------------------------------------------
+
+//Teapot rotation angles
 float alfa_inner_teapots = 0.0f;
 float alfa_outer_teapots = 0.0f;
 
+//Tree positions
 vector<float> treePositions;
 
-/*-------------------------------------------------------------------------------*/
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
-void spherical2Cartesian() {
+//----------------------------------------------------------------------------------------------------------------------
+//Calcular a altura
 
-	camX = radius * cos(beta) * sin(alfa);
-	camY = radius * sin(beta);
-	camZ = radius * cos(beta) * cos(alfa);
+float height(int x, int z) {
+
+    int x_min = -floor(tw/2);
+    int z_min = -floor(th/2);
+
+    //return (imageData[abs(x) + abs(z) * tw]) * (100.0/255.0);
+    return imageData[(x-x_min) * tw + (z-z_min)] * (100.0/255.0);
 }
 
-void drawAxis() {
+float hf(float px, float pz) {
 
-    glBegin(GL_LINES);
-    // X axis in red
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex3f(-50.0f, 0.0f, 0.0f);
-    glVertex3f( 50.0f, 0.0f, 0.0f);
-    // Y Axis in Green
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glVertex3f(0.0f, -50.0f, 0.0f);
-    glVertex3f(0.0f, 50.0f, 0.0f);
-    // Z Axis in Blue
-    glColor3f(0.0f, 0.0f, 1.0f);
-    glVertex3f(0.0f, 0.0f, -50.0f);
-    glVertex3f(0.0f, 0.0f, 50.0f);
-    glEnd();
+    float x1 = floor(px);
+    float x2 = x1 + 1;
+    float z1 = floor(pz);
+    float z2 = z1 + 1;
+
+    float fz = pz - z1;
+    float h_x1_z = height(x1, z1) * (1 - fz) + height(x1, z2) * fz;
+    float h_x2_z = height(x2, z1) * (1 - fz) + height(x2, z2) * fz;
+
+    float fx = x1 - px;
+
+    float height_xz = h_x1_z * (1 - fx) + h_x2_z * fx;
+
+    return height_xz;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 void changeSize(int w, int h) {
 
@@ -66,22 +111,51 @@ void changeSize(int w, int h) {
 	// compute window's aspect ratio
 	float ratio = w * 1.0 / h;
 
-	// Set the projection matrix as current
+	// Reset the coordinate system before modifying
 	glMatrixMode(GL_PROJECTION);
-	// Load Identity Matrix
 	glLoadIdentity();
 
 	// Set the viewport to be the entire window
     glViewport(0, 0, w, h);
 
-	// Set perspective
-	gluPerspective(45.0f ,ratio, 1.0f ,1000.0f);
+	// Set the correct perspective
+	gluPerspective(45,ratio,1,1000);
 
 	// return to the model view matrix mode
 	glMatrixMode(GL_MODELVIEW);
 }
 
-float h(float x1, float z1);
+
+
+//Colocar aqui o código de desenho do terreno usando VBOs com TRIANGLE_STRIPS
+void drawTerrain() {
+
+    for (int i = 0; i < th - 1 ; i++) {
+        glDrawArrays(GL_TRIANGLE_STRIP, (tw) * 2 * i, (tw) * 2);
+    }
+}
+
+void drawTree(float pos_x, float pos_y, float pos_z) {
+
+    glPushMatrix();
+
+    glTranslatef(pos_x, pos_y, pos_z);
+    glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+
+        glColor3f(0.5f, 0.35f, 0.05f);
+        glutSolidCone(1.0f, 5.0f, 5, 4);
+
+        glPushMatrix();
+
+            glColor3f(0.0f, 0.502f, 0.0f);
+            glTranslatef(0.0f, 0.0f, 3.5f);
+            glutSolidCone(4.0f, 10.0f, 5, 5);
+
+        glPopMatrix();
+
+    glPopMatrix();
+}
+
 void drawCircleTeapotFacedOutside(int teapot_size,
                                   int radius,
                                   int nr_teapots,
@@ -96,15 +170,19 @@ void drawCircleTeapotFacedOutside(int teapot_size,
 
         glPushMatrix();
 
+        float x = radius * sin(i * alpha);
+        float z = radius * cos(i * alpha);
+        float y = hf(x, z);
+
         if (!flag) {
-            glTranslatef(radius * sin(i * alpha),
-                         h(radius * sin(i * alpha),radius * cos(i * alpha)),
-                         radius * cos(i * alpha));
+            glTranslatef(x,
+                         1.5f + y,
+                         z);
             glRotatef(-(90.0f - offset * i), 0.0f, 1.0f, 0.0f);
         } else {
-            glTranslatef(radius * cos(i * alpha),
-                         h(radius * cos(i * alpha),radius * sin(i * alpha)),
-                         radius * sin(i * alpha));
+            glTranslatef(x,
+                         1.5f + y,
+                         z);
             glRotatef((90.0f - offset * i), 0.0f, 1.0f, 0.0f);
         }
         glutSolidTeapot(teapot_size);
@@ -112,58 +190,22 @@ void drawCircleTeapotFacedOutside(int teapot_size,
     }
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 
-void drawTree(float pos_x, float pos_z) {
+void printInfo() {
 
-    glPushMatrix();
-    glTranslatef(pos_x, h(pos_x,pos_z), pos_z);
-    glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
-
-    glColor3f(0.5f, 0.35f, 0.05f);
-    glutSolidCone(1.0f, 5.0f, 5, 4);
-
-    glColor3f(0.0f, 0.502f, 0.0f);
-    glTranslatef(0.0f, 0.0f, 3.5f);
-    glutSolidCone(4.0f, 10.0f, 5, 5);
-    glPopMatrix();
+    cout << endl << "Comandos disponiveis:" << endl;
+    cout << "\tW | A | S | D : movimentar;" << endl;
+    cout << "\tq | e : Rotação" << endl;
+    cout << "\tl | f : glPolygonMode(GL_FRONT, GL_LINE | GL_FILL);" << endl;
 }
 
-//---------------------------------------------------------------------------
-
-int startX, startY, tracking = 0;
-int  r = 50;
-int alpha = 0;
-
-//---------------------------------------------------------------------------
-
-//Image properties and pixel density array
-unsigned int t, tw, th;
-unsigned char *imageData;
-
-//Grid vertices
-float* gridVertices;
-
-//VBOs
-GLuint buffers[1];
-
-//---------------------------------------------------------------------------
-//Numeros do imageData vão de 0 a 255
-float h(float coluna, float linha){
-    int t = (int)tw;
-    int x=(int)linha;
-    int z=(int)coluna;
-    return imageData[x*t+z]/255.0 * 100;
-}
-
-//Colocar aqui o código de desenho do terreno usando VBOs com TRIANGLE_STRIPS
-void drawTerrain() {
-
-    for (int i = 0; i < th - 1 ; i++) {
-        glDrawArrays(GL_TRIANGLE_STRIP, (tw) * 2 * i, (tw) * 2);
-    }
-}
+//----------------------------------------------------------------------------------------------------------------------
 
 void renderScene(void) {
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Camera settings
 
 	float pos[4] = {-1.0, 1.0, 1.0, 0.0};
 
@@ -171,64 +213,105 @@ void renderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glLoadIdentity();
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Foward/Backward motion
+
+    //Camera Placement
+    camY = eyeHeight + hf(camX, camZ);
+
+    //Camera Orientation
+    centerX = (camX + sin(alphaCam));
+    centerY = camY;
+    centerZ = (camZ + cos(alphaCam));
+
+    //------------------------------------------------------------------------------------------------------------------
+
 	gluLookAt(camX, camY, camZ,
-		      0.0,0.0,0.0,
-			  0.0f,1.0f,0.0f);
+		      centerX, centerY, centerZ,
+			  upX, upY,upZ);
+
+	kSD = kFB = 0;
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Draw from pl06 - TERRENO
+    //------------------------------------------------------------------------------------------------------------------
 
 	//Desenhar o terreno
 	glPushMatrix();
-	glColor3f(0.2,0.2,0.2);
-	drawTerrain();
+	    glColor3f(0.2,0.3,0);
+	    drawTerrain();
     glPopMatrix();
-
-    /*------------------------------------------------------------------------*/
-
-    //Draw the middle torus
-    glColor3f(1.0f, 0.0f, 1.0f);
-    glutSolidTorus(1.0f, 3.0f, 20, 20);
-
-    /*------------------------------------------------------------------------*/
-
-    //Radius 15
-    glPushMatrix();
-    glRotatef(alfa_inner_teapots, 0.0f, 1.0f, 0.0f);
-    drawCircleTeapotFacedOutside(2.0f, 15.0f, 8, 0.0f, 0.0f, 1.0f, 0);
-    glPopMatrix();
-
-    //Radius 35
-    glPushMatrix();
-    glRotatef(alfa_outer_teapots, 0.0f, 1.0f, 0.0f);
-    drawCircleTeapotFacedOutside(2.0f, 35.0f, 16, 1.0f, 0.0f, 0.0f, 1);
-    glPopMatrix();
-
-    /*------------------------------------------------------------------------*/
-    //Draw all trees
-
-    for(auto it = treePositions.begin(); it != treePositions.end(); it+=2) {
-
-        drawTree(*(it.base()), *((it+1).base()));
-    }
-
-    /*------------------------------------------------------------------------*/
 
 	// just so that it renders something before the terrain is built
 	// to erase when the terrain is ready
 	//glutWireTeapot(2.0);
 
+	//------------------------------------------------------------------------------------------------------------------
+    //Draw from pl05 - TEAPOTS, ARVORES, ...
+    //------------------------------------------------------------------------------------------------------------------
+
+    //Draw the middle torus
+    glPushMatrix();
+        float pos_y = hf(0.0f, 0.0f);
+        glTranslatef(0.0f, pos_y, 0.0f);
+        glColor3f(1.0f, 0.0f, 1.0f);
+        glutSolidTorus(1.0f, 3.0f, 20, 20);
+    glPopMatrix();
+
+    //------------------------------------------------------------------------------------------------------------------
+
+    //Aumentar o angulo de rotacao dos teapots
+    alfa_inner_teapots -= 0.8f;
+    alfa_outer_teapots += 0.8f;
+
+    //Radius 15
+    glPushMatrix();
+        glRotatef(alfa_inner_teapots, 0.0f, 1.0f, 0.0f);
+        drawCircleTeapotFacedOutside(2.0f, 15.0f, 8, 0.0f, 0.0f, 1.0f, 0);
+    glPopMatrix();
+
+    //Radius 35
+    glPushMatrix();
+        glRotatef(alfa_outer_teapots, 0.0f, 1.0f, 0.0f);
+        drawCircleTeapotFacedOutside(2.0f, 35.0f, 16, 1.0f, 0.0f, 0.0f, 1);
+    glPopMatrix();
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Draw all trees
+
+
+    for(auto it = treePositions.begin(); it != treePositions.end(); it+=3) {
+
+        drawTree(*(it.base()), *((it+1).base()), *((it+2).base()));
+    }
+
+    //-----------------------------------------------------------------------
+
     // End of frame
 	glutSwapBuffers();
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
+void spherical2Cartesian() {
+
+    camX = radius * cos(beta) * sin(alfa);
+    camY = radius * sin(beta);
+    camZ = radius * cos(beta) * cos(alfa);
+}
+
+//---------------------------------------------------------------------------------------------------------------------
 
 void processSpecialKeys(int key, int xx, int yy) {
 
     switch (key) {
 
         case GLUT_KEY_RIGHT:
-            alpha -= 0.1; break;
+            alphaCam -= 0.1; break;
 
         case GLUT_KEY_LEFT:
-            alpha += 0.1; break;
+            alphaCam += 0.1; break;
 
         case GLUT_KEY_UP:
             beta += 0.1f;
@@ -254,20 +337,110 @@ void processSpecialKeys(int key, int xx, int yy) {
 
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 
 void processKeys(unsigned char key, int xx, int yy) {
 
-    switch(key) {
+    if (tolower(key) == 'f') {
 
-        case 'f':
-            glPolygonMode(GL_FRONT, GL_FILL);
-            break;
-        case 'l':
-            glPolygonMode(GL_FRONT, GL_LINE);
-            break;
+        glPolygonMode(GL_FRONT, GL_FILL);
+
     }
+
+    if (tolower(key) == 'l') {
+
+        glPolygonMode(GL_FRONT, GL_LINE);
+
+    }
+
+    if (tolower(key) == 'w') {
+
+        kFB = 0.9f;
+
+        //Foward/Backward motion
+        Dx = centerX - camX;
+        Dy = 0.0f;
+        Dz = centerZ - camZ;
+
+        camX += kFB * Dx;
+        camY += kFB * Dy;
+        camZ += kFB * Dz;
+
+        centerX += kFB * Dx;
+        centerY += kFB * Dy;
+        centerZ += kFB * Dz;
+
+    }
+
+    if (tolower(key) == 's') {
+
+        kFB = -0.9f;
+
+        //Foward/Backward motion
+        Dx = centerX - camX;
+        Dy = 0.0f;
+        Dz = centerZ - camZ;
+
+        camX += kFB * Dx;
+        camY += kFB * Dy;
+        camZ += kFB * Dz;
+
+        centerX += kFB * Dx;
+        centerY += kFB * Dy;
+        centerZ += kFB * Dz;
+
+    }
+
+    if (tolower(key) == 'a') {
+
+        kSD = -0.9f;
+
+        Rx = Dy * upZ - Dz * upY;
+        Ry = Dz * upX - Dx * upZ;
+        Rz = Dx * upY - Dy * upX;
+
+        camX += kSD * Rx;
+        camY += kSD * Ry;
+        camZ += kSD * Rz;
+
+        centerX += kSD * Rx;
+        centerY += kSD * Ry;
+        centerZ += kSD * Rz;
+
+    }
+
+    if (tolower(key) == 'd') {
+
+        kSD = 0.9f;
+
+        Rx = Dy * upZ - Dz * upY;
+        Ry = Dz * upX - Dx * upZ;
+        Rz = Dx * upY - Dy * upX;
+
+        camX += kSD * Rx;
+        camY += kSD * Ry;
+        camZ += kSD * Rz;
+
+        centerX += kSD * Rx;
+        centerY += kSD * Ry;
+        centerZ += kSD * Rz;
+
+    }
+
+    if (tolower(key) == 'q') {
+
+        alphaCam -= M_PI/64;
+
+    }
+
+    if (tolower(key) == 'e') {
+
+        alphaCam += M_PI/64;
+    }
+
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 
 void processMouseButtons(int button, int state, int xx, int yy) {
 
@@ -283,7 +456,7 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 	}
 	else if (state == GLUT_UP) {
 		if (tracking == 1) {
-			alpha += (xx - startX);
+            alphaCam += (xx - startX);
 			beta += (yy - startY);
 		}
 		else if (tracking == 2) {
@@ -296,6 +469,7 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 	}
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 
 void processMouseMotion(int xx, int yy) {
 
@@ -312,7 +486,7 @@ void processMouseMotion(int xx, int yy) {
 	if (tracking == 1) {
 
 
-		alphaAux = alpha + deltaX;
+		alphaAux = alphaCam + deltaX;
 		betaAux = beta + deltaY;
 
 		if (betaAux > 85.0)
@@ -324,7 +498,7 @@ void processMouseMotion(int xx, int yy) {
 	}
 	else if (tracking == 2) {
 
-		alphaAux = alpha;
+		alphaAux = alphaCam;
 		betaAux = beta;
 		rAux = r - deltaY;
 		if (rAux < 3)
@@ -334,47 +508,9 @@ void processMouseMotion(int xx, int yy) {
 	camZ = rAux * cos(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
 	camY = rAux * 							     sin(betaAux * 3.14 / 180.0);
 }
-void printInfo() {
 
-	printf("Vendor: %s\n", glGetString(GL_VENDOR));
-	printf("Renderer: %s\n", glGetString(GL_RENDERER));
-	printf("Version: %s\n", glGetString(GL_VERSION));
-
-	printf("\nUse Arrows to move the camera up/down and left/right\n");
-	printf("Home and End control the distance from the camera to the origin\n");
-}
-
-float float_rand( float min, float max ) {
-
-    float scale = rand() / (float) RAND_MAX; /* [0, 1.0] */
-    return min + scale * ( max - min );      /* [min, max] */
-}
-
-float distance_to_origin(float pos_x, float pos_z) {
-    return sqrtf(pow(pos_x, 2) + pow(pos_z, 2));
-}
-
-void generate_tree_pos(int nr_trees) {
-
-    int valid_trees = 0;
-    int lower = -100.0f, upper = 100.0f;
-    float pos_x, pos_z;
-    while(valid_trees < nr_trees) {
-
-        pos_x = float_rand(lower, upper);
-        pos_z = float_rand(lower, upper);
-
-        if (distance_to_origin(pos_x, pos_z) > 50.0f) {
-
-            //Push X position
-            treePositions.push_back(pos_x);
-            //Push Z position
-            treePositions.push_back(pos_z);
-
-            valid_trees++;
-        }
-    }
-}
+//----------------------------------------------------------------------------------------------------------------------
+//Inicializar a imagem num array de bytes, triangulos do terreno e VBOs
 
 void init() {
 
@@ -403,28 +539,29 @@ void init() {
     int off_x = 0, off_z = 0;
 
     float half = (float) tw / 2;
-
     for (int vert = 0; vert < (tw * th * 2 * 3);) {
 
         //----------------------------------------------------
         //P0
 
-        //Px
-        gridVertices[vert++] = -half + 0.5 + off_x;
-        //Py
-        gridVertices[vert++] = ((int)imageData[off_x + off_z]) - 50;
-        //Pz
-        gridVertices[vert++] = -half + 0.5 + off_z;
+        float P0x = -half + 0.5 + off_x;
+        float P0z = -half + 0.5 + off_z;
+        float P0y = height(P0x, P0z);
+
+        gridVertices[vert++] = P0x;
+        gridVertices[vert++] = P0y;
+        gridVertices[vert++] = P0z;
 
         //----------------------------------------------------
         //P1
 
-        //Px
-        gridVertices[vert++] = -half + 0.5 + off_x;
-        //Py
-        gridVertices[vert++] = ((int)imageData[off_x + off_z * tw]) - 50;
-        //Pz
-        gridVertices[vert++] = -half + 0.5 + off_z + 1;
+        float P1x = -half + 0.5 + off_x;
+        float P1z = -half + 0.5 + off_z + 1;
+        float P1y = height(P1x, P1z);
+
+        gridVertices[vert++] = P1x;
+        gridVertices[vert++] = P1y;
+        gridVertices[vert++] = P1z;
 
         //----------------------------------------------------
 
@@ -444,7 +581,7 @@ void init() {
     //glEnable(GL_LINE_SMOOTH);
 
     //---------------------------------------------------------
-	//VBO initialization
+	//VBOs initialization
 
     glEnableClientState(GL_VERTEX_ARRAY);
 
@@ -456,24 +593,74 @@ void init() {
 
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+//Gerar um float random
+
+float float_rand( float min, float max ) {
+
+    float scale = rand() / (float) RAND_MAX; /* [0, 1.0] */
+    return min + scale * ( max - min );      /* [min, max] */
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//Distância cartersiana entre dois pontos
+
+float distance_to_origin(float pos_x, float pos_z) {
+    return sqrtf(pow(pos_x, 2) + pow(pos_z, 2));
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//Gerar as posições das árvores
+
+void generate_tree_pos(int nr_trees) {
+
+    int valid_trees = 0;
+    int lower = -100.0f, upper = 100.0f;
+    float pos_x, pos_y, pos_z;
+
+    while(valid_trees < nr_trees) {
+
+        pos_x = float_rand(lower, upper);
+        pos_z = float_rand(lower, upper);
+        pos_y = hf(pos_x, pos_z);
+
+        if (distance_to_origin(pos_x, pos_z) > 50.0f) {
+
+            //Push X position
+            treePositions.push_back(pos_x);
+            //Push Y position
+            treePositions.push_back(pos_y);
+            //Push Z position
+            treePositions.push_back(pos_z);
+
+            valid_trees++;
+        }
+    }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 
 int main(int argc, char **argv) {
 
+    //------------------------------------------------------------------------------------------------------------------
+
+    //Clear the screen
     system("clear");
 
-    srand(time(NULL));
+    //------------------------------------------------------------------------------------------------------------------
 
-    generate_tree_pos(300);
+    //Set the seed to generate random float
+    time_t t;
+    srand((unsigned) time(&t));
+
+    //------------------------------------------------------------------------------------------------------------------
+
     // init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
 	glutInitWindowPosition(100,100);
-	glutInitWindowSize(800,800);
+	glutInitWindowSize(320,320);
 	glutCreateWindow("CG@DI-UM");
-
-    spherical2Cartesian();
-
-	printInfo();
 
     // Required callback registry
 	glutDisplayFunc(renderScene);
@@ -486,19 +673,27 @@ int main(int argc, char **argv) {
 	glutMotionFunc(processMouseMotion);
     glutSpecialFunc(processSpecialKeys);
 
+    //------------------------------------------------------------------------------------------------------------------
 
-
-	//Ver melhor
+	//Inicializar o gewl
     glewInit();
 
-    //Init DevIL
+    //Inicializar o DevIL
     ilInit();
 
-    //load image, array pixels, ...
+    //Carregar a imagem do terreno e gerar o array de posições para as alturas
 	init();
+
+    //Generate random positions for trees
+    generate_tree_pos(300);
+
+    printInfo();
 
     // enter GLUT's main cycle
     glutMainLoop();
 
+    //------------------------------------------------------------------------------------------------------------------
+
 	return 0;
 }
+

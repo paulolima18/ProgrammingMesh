@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/linux/Downloads/escola/CG/2019_2020/aula6/code/main.cpp" "/home/linux/Downloads/escola/CG/2019_2020/aula6/bin/CMakeFiles/class6.dir/main.cpp.o"
+  "/home/meliodas/Documents/ProgrammingMesh/CPP/GraphicComputation/class6/code/main.cpp" "/home/meliodas/Documents/ProgrammingMesh/CPP/GraphicComputation/class6/bin/CMakeFiles/class6.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
