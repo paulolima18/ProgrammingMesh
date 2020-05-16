@@ -1,3 +1,0 @@
-/home/linux/Downloads/escola/CG/2019_2020/code_3/bin/CMakeFiles/rebuild_cache.dir
-/home/linux/Downloads/escola/CG/2019_2020/code_3/bin/CMakeFiles/edit_cache.dir
-/home/linux/Downloads/escola/CG/2019_2020/code_3/bin/CMakeFiles/class3.dir

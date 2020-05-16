@@ -35,113 +35,97 @@
 		
 ![Example2](class2/example.png)
 
-##Aula 03 - Cilindro e Movimentação de Câmera##
+## Class 3 - Camera Motion Drawing a Cylinder
 
-	Sumário:
+	Summary:
+		* Polar Coordinates and Spherical Coordinates
+		* Explorer Mode Camera and FPS Camera
 
-		Coordenadas polares e esféricas. 
-		Movimentação da câmera em modo explorador e FPS. 
-		Definição de um cilindro.
-
-	Exercício:
-
-		Desenhar um cilindro e implementar o modo explorador.
+	Exercise:
+		Build a cylinder using triangles defining the vertices based on polar coordinates and implment explorer mode
 		
-![Resultado da Aula 3](https://github.com/HelderGoncalves92/CG-Aulas/blob/master/CG-Aula03/Resultado/Aula3_2.png?raw=true "Resultado da Aula 3")
+![Example3](class3/example.png)
 
-##Aula 04 - Construção de um cenário 3D##
+## Class 4 - Performance
 
-	Sumário:
+	Summary:
+		* VBOs
+		* Frames per Second
 
-		Transformações geométricas.
-		Construção de um cenário 3D recorrendo a transformações geométricas.
-
-	Exercício:
-
-		A batalha d'O Grande Donut.
+	Exercise:
+		Define vertex buffers for the cylinder (without indices)
 		
-![Resultado da Aula 4](https://github.com/HelderGoncalves92/CG-Aulas/blob/master/CG-Aula04/Resultado/Aula4_5.png?raw=true "Resultado da Aula 4")
+![Example4](class4/example.png)
 
-##Aula 05 - VBO´s / Desempenho##
+## Class 5 - Geometric Transformations - Building a 3D World
 
-	Sumário:
+	Summary:
+		* World Creation
 
-		Vertex Buffer Objects
-		Análise de vantangens dos VBOs vs. Modo Imediato
+	Exercise:
+		Create a terrain with trees in openGL
 
-	Exercício:
+![Example5](class5/example.png)
 
-		Redefinição do desenho do cilindro
+## Class 6 - Generating Geometry - Terrains
 
-![Resultado da Aula 5](https://github.com/HelderGoncalves92/CG-Aulas/blob/master/CG-Aula05/Resultado/Aula5_1.png?raw=true "Resultado da Aula 5")
-
-##Aula 06 - Geração de Terrenos##
-
-	Sumário:
-
-		Leitura de imagens recorrendo à biblioteca *DevIL*
-		Interpretação de imagens como mapas de alturas
+	Summary:
+		* Height Maps
+		* DevIL
 		Construção de terrenos a partir de mapas de alturas
 
-	Exercício:
-
-		Reconstruir o terreno do cenário as aulas anteriores utilizando uma grelha regular com um mapa de alturas
-
-
-![Resultado da Aula 6](https://github.com/HelderGoncalves92/CG-Aulas/blob/master/CG-Aula06/Resultado/Aula6_3.png?raw=true "Resultado da Aula 6")
-
-##Aula 07 - Curvas de Catmull-Rom##
-
-	Sumário:
-
-		Definição de percurso recorrendo a curvas de Catmull-Rom
-		Fórmula Matricial
-
-	Exercício:
-
-		Implementar a função para retornar um ponto de um segmento da curva e desenhar a curva
-
-![Resultado da Aula 7](https://github.com/HelderGoncalves92/CG-Aulas/blob/master/CG-Aula07/Resultado/Aula7_1.png?raw=true "Resultado da Aula 7")
-
-##Aula 08 - Iluminação##
-
-	Sumário:
-
-		Definição de normais com e sem VBOs
-		Instruções para activar e definir iluminação em OpenGL
-
-	Exercício:
-
-		Definir normais para o cilindro, adicionar instruções para activar a iluminação
-
-![Resultado da Aula 8](https://github.com/HelderGoncalves92/CG-Aulas/blob/master/CG-Aula08/Resultado/Aula8_1.png?raw=true "Resultado da Aula 8")
-
-##Aula 10 - Texturas##
-
-	Sumário:
-
-		Definição de texturas em OpenGL
-		Aplicação de texturas com VBOs
-
-	Exercício:
-
-		Aplicar uma textura ao terreno
-
-![Resultado da Aula 10](https://github.com/HelderGoncalves92/CG-Aulas/blob/master/CG-Aula10/Resultado/Aula10_2.png?raw=true "Resultado da Aula 10")
-
-##Aula 11 - Texturas no Cilindro##
-
-	Sumário:
-
-		Atlas de Texturas
-		Definição de coordenadas de textura para templates
-
-	Exercício:
-
-		Calcular as coordenadas de textura para um cilindro com base num atlas
-
-![Resultado da Aula 11](https://github.com/HelderGoncalves92/CG-Aulas/blob/master/CG-Aula11/Resultado/Aula11_1.png?raw=true "Resultado da Aula 11")
+	Exercise:
+		Given an image, interpret it as a height map, and generate the corresponding terrain.
 
 
-Projectos feitos no **XCode**. Se utilizas *Windows* basta criares um novo projecto, copiar o '.cpp' e fazeres os includes necessários.
+![Example6](class6/example.png)
+
+## Class 7 - Decorating the Terrain
+
+	Summary:
+		* Height at any point in the terrain
+
+	Exercise:
+		Redo script for class 5, on top of the terrain from class 6.
+
+![Example7](class7/example.png)
+
+## Class 8 - Animation with Catmull-Rom Curves
+
+	Summary:
+		* Cubic Curves – Catmull-Rom
+	Exercise:
+		Implementing a function to return the direction and draw the path.
+
+![Example8](class8/example.png)
+
+## Class 9 - Lighting - Lights, Materials and Normals
+
+	Summary:
+		* Setup a light source
+		* Define a material for the cylinder
+		* OpenGL – Normals and VBOs
+	Exercise:
+		Draw a cylinder lit by a directional light
+
+![Example10](class10/example.png)
+
+## Class 10 - Terrain II - Adding light and texture to the terrain
+
+	Summary:
+		* Terrain Normals
+		* Texture Coordinates
+		* Loading a Texture
+		* Mipmapping
+	Exercise:
+		Applying texture and mipmapping to the terrain
+
+![Example10](class10/example.png)
+
+## Aula 11 - 
+
+	Summary:
+
+	Exercise:
+![Example11](class11/example.png)
 
