@@ -1,3 +1,0 @@
-/home/linux/Documents/CPLUS/GC/glew/bin/CMakeFiles/rebuild_cache.dir
-/home/linux/Documents/CPLUS/GC/glew/bin/CMakeFiles/edit_cache.dir
-/home/linux/Documents/CPLUS/GC/glew/bin/CMakeFiles/class4.dir

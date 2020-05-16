@@ -1,3 +1,0 @@
-/home/linux/Documents/CPLUS/CG/snowman/bin/CMakeFiles/rebuild_cache.dir
-/home/linux/Documents/CPLUS/CG/snowman/bin/CMakeFiles/edit_cache.dir
-/home/linux/Documents/CPLUS/CG/snowman/bin/CMakeFiles/class3.dir

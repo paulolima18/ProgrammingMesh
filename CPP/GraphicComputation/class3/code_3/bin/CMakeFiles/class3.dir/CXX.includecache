@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/linux/Downloads/escola/CG/2019_2020/code_3/main.cpp
+GLUT/glut.h
+-
+GL/glut.h
+-
+math.h
+-
+

@@ -1,0 +1,3 @@
+/home/meliodas/Downloads/escola/CG/2019_2020/aula9/bin/CMakeFiles/rebuild_cache.dir
+/home/meliodas/Downloads/escola/CG/2019_2020/aula9/bin/CMakeFiles/class9.dir
+/home/meliodas/Downloads/escola/CG/2019_2020/aula9/bin/CMakeFiles/edit_cache.dir
