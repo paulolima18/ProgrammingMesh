@@ -4,7 +4,7 @@
 	<h1><strong>Aprendizagem de linguagens</strong></h1>
 </div>
 
-* Este repositório contém pequenos projetos escolares ou experiencias de algumas linguagem de programação.
+* Este repositório contém pequenos projetos escolares ou experiências em algumas linguagens de programação.
 
 
 # C
@@ -13,39 +13,38 @@
 - [Sistemas Operativos](C/OSystems)
 - [Programação Imperativa](C/ImperativeP)
 - [Algoritmos e Estruturas de Dados](C/Algorithms_DataStructures)
-- [Aleatório](C/Random) -> Other C code samples
+- [Aleatório](C/Random) -> Outros exemplos de código em C
 
 # Ruby
 
-- [Inicio Ruby](Ruby/ruby_basics) -> Basic ruby functions and syntax
-- [Servidor Tcp](Ruby/tcp_server) -> Basic data transfer using TCP
+- [Inicio Ruby](Ruby/ruby_basics) -> Exercícios em Ruby
+- [Servidor Tcp](Ruby/tcp_server) -> Transferência de dados e TCP
 
 # Golang
 
-- [Inicio](Golang/start) -> Basic Golang functions and syntax
-- [Página Web](Golang/webpage) -> Webpage template and Golang web-requests
+- [Inicio](Golang/start) -> Exercícios em Golang
+- [Página Web](Golang/webpage) -> Modelo de site em Goland e pedidos-web
 
 # Java
 
-- [Exercicio POO](Java/OOP_classes) -> Object Oriented Programming Class exercises
+- [Exercicio POO](Java/OOP_classes) -> Exercícios de programação orientada a objetos
 
 # Python
 
-- [Inicio Python](Python/python_basics) -> Basic python functions and syntax
-- [Módulo Turtle](Python/turtle_module) -> Turtle module implementation
-- [Coin Bot](Python/coinBot) -> Program that searches for a possible 'win' by tranding currencies using uphold api
-- [Machine Learning](Python/machine_learning) -> Machine learning technics used in both password guessing algorithms and path finders with turtle module
-
+- [Inicio Python](Python/python_basics) -> Exercícios em Python
+- [Módulo Turtle](Python/turtle_module) -> Implementação do modulo Turtle
+- [Coin Bot](Python/coinBot) -> Programa que procura um possível lucra através do uso de uma API de trading
+- [Machine Learning](Python/machine_learning) -> Técnicas de Machine learning usadas em algoritmos de descoberta de passwords ou caminhos
 # Haskell
 
-- [Cesium Bomberman](Haskell/cesium_bomberman) -> AI and String compression projects
-- [Programaçao Funcional(Iniciante)](Haskell/FunctionalP) -> Some Functional Programming exercises in Haskell
-- [Programaçao Funcional(Avançado)](Haskell/CP) -> More advanced functional programming code samples
+- [Cesium Bomberman](Haskell/cesium_bomberman) -> AI e compressão de dados
+- [Programaçao Funcional(Iniciante)](Haskell/FunctionalP) -> Exercícios de programação funcional em Haskell
+- [Programaçao Funcional(Avançado)](Haskell/CP) -> Exercícios avançados de programação funcional
 
 # C++
 
-- [OpenGL](CPP/GraphicComputation) -> Game engine and other graphic uses of C++ with OpenGl
+- [OpenGL](CPP/GraphicComputation) -> Motor de jogo gráfico com uso a OpenGL e c++
 
 # Html and CSS
 
-- [Página Doge](Html_Css/DogeSite) -> Simple html and css test website
+- [Página Doge](Html_Css/DogeSite) -> Página web
